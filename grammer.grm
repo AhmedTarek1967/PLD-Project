@@ -1,0 +1,79 @@
+"Name"          = 'Copra'
+"Author"        = 'Ahmed Tarek Hussein'
+
+"Start Symbol" = <main>
+               
+!--------------Terminal--------------------
+Id= ('_'|'$'|{letter}){alphanumeric}*
+Digit = ('+'|'-')?{digit}+ (','{digit}+)? (('e' | ('+'|'-')?{digit}+) '^' ('+'|'-')?{digit}+ (','{digit}+)?)?
+!---------------Rules-------------------
+<main> ::= 'Hi' <Body> 'Bye' 
+     
+<Body> ::= <concept>
+        |<concept><body>
+        
+<concept> ::= <assign>
+           |<declaration>
+           |<if_stmt>
+           |<for_stmt>
+           |<while_stat>
+           |<function_dec>
+           |<function-call>
+           
+<assign> ::=<id>'='<expr>
+          
+<id>::=Id
+     
+<expr> ::=<expr>'+'<term>
+        |<expr>'-'<term>
+        |<term>
+        
+<term> ::=<term>'*'<factor>
+        |<term>'/'<factor>
+        |<factor>
+        
+<factor> ::=<factor>'**'<exp>
+          |<exp>
+          
+<exp> ::='('<expr>')'
+       |<id>
+       |<digit>
+       
+
+<digit> ::= Digit
+         
+!--------if stmt--------
+<if_stmt> ::=if <con>':' <Body> endif
+        |if<con>':'<Body> else <if_stmt> endif
+        
+<con> ::=<expr><op><expr>
+       
+<op> ::= '<' | '>' | '==' | '!='
+      
+!--------------------for loop---------
+<for_stmt> ::= for <assign> 'in' <con>  ':'<Body>endfor
+          
+<data> ::=int | string | float
+        
+<step> ::= '--'<id>
+        |'++'<id>
+        |<assign>
+        
+!---------while--------------------
+<while_stat> ::= while <con> ':' <Body> <step>endwhile
+!-------------declaration------------
+
+<declaration> ::= <data><assign>     
+!------function------
+
+<function_dec> ::=def <name>'('<parameter>')'':'<Body> return <id>
+
+<name> ::= <id>
+<data-Type> ::= <data>
+               
+<parameter> ::= <data><id>
+             |<data><id>','<parameter>
+             
+!---------------------func-call-----------------
+
+<function-call> ::= <name> '('<parameter>')'
